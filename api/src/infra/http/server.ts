@@ -1,6 +1,9 @@
 import { fastifyCors } from "@fastify/cors";
+import { fastifySwagger } from "@fastify/swagger";
+import fastifyApiReference from "@scalar/fastify-api-reference";
 import { fastify } from "fastify";
 import {
+  jsonSchemaTransform,
   serializerCompiler,
   validatorCompiler,
   type ZodTypeProvider,
@@ -19,6 +22,21 @@ app.setValidatorCompiler(validatorCompiler);
 app.setSerializerCompiler(serializerCompiler);
 
 app.register(fastifyCors, { origin: "*" });
+
+app.register(fastifySwagger, {
+  openapi: {
+    info: {
+      title: "Brev.ly API",
+      description: "URL shortener API",
+      version: "1.0.0",
+    },
+  },
+  transform: jsonSchemaTransform,
+});
+
+app.register(fastifyApiReference, {
+  routePrefix: "/docs",
+});
 
 app.get("/health", () => {
   return { status: "ok" };
