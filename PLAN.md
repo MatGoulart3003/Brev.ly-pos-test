@@ -59,8 +59,11 @@ web/
     ├── App.tsx             # routes: / , /:shortUrl , *
     ├── theme.ts            # Chakra v3 system (createSystem + defineConfig)
     ├── styles/index.css    # Tailwind v4 layers (no preflight) + @config
-    ├── lib/                # env.ts, api.ts (axios), query-client.ts
-    ├── api/                # types.ts, links.ts (6 fns + query keys)
+    ├── lib/                # env.ts, api.ts (axios), query-client.ts, query-keys.ts
+    ├── services/           # one folder per service (mirrors server): create-link/,
+    │                       # list-links/, get-link-by-short-url/, increment-link-access/,
+    │                       # delete-link/, export-links/ — each with <name>.ts + types.ts;
+    │                       # shared Link in types.ts, endpoints.ts with path builders
     ├── stores/             # delete-dialog.ts (zustand)
     ├── hooks/              # use-links, use-create-link, use-delete-link, use-export-links
     ├── components/         # logo, create-link-form, links-list, link-item,
@@ -110,13 +113,13 @@ Boundary rule: Tailwind classes only on plain HTML layout elements; Chakra style
 
 ## Step 3 — Env & data layer
 
-- [ ] `.env.example` (`VITE_FRONTEND_URL=`, `VITE_BACKEND_URL=`) + local `.env`
-- [ ] `src/vite-env.d.ts` typing + `src/lib/env.ts` (zod parse of `import.meta.env`, fail fast)
-- [ ] `src/lib/api.ts`: axios instance, `baseURL = env.VITE_BACKEND_URL`
-- [ ] `src/lib/query-client.ts`: `retry: 1`, `refetchOnWindowFocus: false`
-- [ ] `src/api/types.ts` + `src/api/links.ts`: `createLink`, `listLinks`, `getLinkByShortUrl`, `incrementLinkAccess`, `deleteLink`, `exportLinks` + `linkKeys`
-- [ ] Hooks: `use-links` (`useInfiniteQuery(['links'])`, pageSize 20, `getNextPageParam` accumulated vs `total`), `use-create-link`, `use-delete-link`, `use-export-links` — mutations invalidate `['links']`
-- [ ] Verify against running server
+- [x] `.env.example` (`VITE_FRONTEND_URL=`, `VITE_BACKEND_URL=`) + local `.env`
+- [x] `src/vite-env.d.ts` typing + `src/lib/env.ts` (zod parse of `import.meta.env`, fail fast)
+- [x] `src/lib/api.ts`: axios instance, `baseURL = env.VITE_BACKEND_URL`
+- [x] `src/lib/query-client.ts`: `retry: 1`, `refetchOnWindowFocus: false` (done in step 2)
+- [x] `src/api/types.ts` + `src/api/links.ts`: `createLink`, `listLinks`, `getLinkByShortUrl`, `incrementLinkAccess`, `deleteLink`, `exportLinks` + `linkKeys`
+- [x] Hooks (camelCase names per convention): `useLinks` (`useInfiniteQuery`, pageSize 20, `getNextPageParam` accumulated vs `total`), `useCreateLink`, `useDeleteLink`, `useExportLinks` — mutations invalidate the list key
+- [x] Verify against running server (temporary render of `useLinks` JSON in the browser: success, page 1 fetched)
 
 ## Step 4 — Home: create link form
 
