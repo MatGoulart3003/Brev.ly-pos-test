@@ -12,6 +12,7 @@ import {
 import { env } from "../../env";
 import { createLinkRoute } from "./routes/create-link";
 import { deleteLinkRoute } from "./routes/delete-link";
+import { exportLinksRoute } from "./routes/export-links";
 import { getLinkByShortUrlRoute } from "./routes/get-link-by-short-url";
 import { incrementLinkAccessRoute } from "./routes/increment-link-access";
 import { listLinksRoute } from "./routes/list-links";
@@ -43,6 +44,7 @@ app.get("/health", () => {
 });
 
 app.register(createLinkRoute);
+app.register(exportLinksRoute);
 app.register(listLinksRoute);
 app.register(getLinkByShortUrlRoute);
 app.register(deleteLinkRoute);
