@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
+  <title>Brev.ly</title>
+  <rect width="48" height="48" rx="10" fill="#2C46B1"/>
+  <path d="M20.5 27.5l7-7" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"/>
+  <path d="M22 31l-2.5 2.5a5.3 5.3 0 0 1-7.5-7.5L15.5 22" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" fill="none"/>
+  <path d="M26 17l2.5-2.5a5.3 5.3 0 0 1 7.5 7.5L32.5 26" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" fill="none"/>
+</svg>
