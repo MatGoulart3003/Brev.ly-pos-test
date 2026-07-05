@@ -4,10 +4,14 @@
   "description": "URL shortener API (Brev.ly)",
   "type": "module",
   "scripts": {
-    "dev": "tsx watch --env-file=.env src/server.ts",
+    "dev": "tsx watch --env-file=.env src/infra/http/server.ts",
     "typecheck": "tsc --noEmit",
-    "build": "tsup src/server.ts --format esm --out-dir dist",
-    "start": "node dist/server.js"
+    "test": "vitest run",
+    "build": "tsup src/infra/http/server.ts --format esm --out-dir dist",
+    "start": "node dist/server.js",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:studio": "drizzle-kit studio"
   },
   "license": "ISC",
   "packageManager": "pnpm@10.33.0",
@@ -22,6 +26,7 @@
     "fastify": "^5.10.0",
     "fastify-type-provider-zod": "^7.0.0",
     "postgres": "^3.4.9",
+    "uuidv7": "^1.2.1",
     "zod": "^4.4.3"
   },
   "devDependencies": {
@@ -29,6 +34,7 @@
     "drizzle-kit": "^0.31.10",
     "tsup": "^8.5.1",
     "tsx": "^4.23.0",
-    "typescript": "^6.0.3"
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.9"
   }
 }
