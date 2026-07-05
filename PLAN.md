@@ -6,6 +6,13 @@ Stack: Chakra UI v3 (components) + Tailwind CSS v4 (layout), react-router v7, Re
 
 Code in English; user-facing copy in pt-BR (per Figma).
 
+### Code conventions (user standard, defined after step 2)
+
+- Tailwind classes grouped in a `const stylesheet = { ... }` per component; `className={stylesheet.key}` in JSX — never inline class strings.
+- All UI copy via i18next `useTranslation()` with the `pt_BR` language key (`src/i18n/locales/pt-br.ts`); typed keys via `src/i18n/i18next.d.ts`. No hardcoded strings in views.
+- No magic strings/numbers in logic: `UPPER_SNAKE_CASE` constants at the top of the module.
+- View/logic split: components with logic are folders — view in `index.tsx`, business logic in `hooks/useWhatTheHookDoes.ts` inside the component folder (e.g. `components/create-link-form/index.tsx` + `components/create-link-form/hooks/useCreateLinkForm.ts`).
+
 ## Reference
 
 ### Style guide (extracted from the .fig file)
@@ -73,11 +80,13 @@ web/
 - [x] `tailwind.config.js` with style guide colors + `fontFamily.sans` Open Sans
 - [x] `src/styles/index.css` — Tailwind v4 without preflight (Chakra's reset wins):
   ```css
-  @layer theme, base, components, utilities;
   @import "tailwindcss/theme.css" layer(theme);
-  @import "tailwindcss/utilities.css" layer(utilities);
+  @import "tailwindcss/utilities.css"; /* unlayered on purpose, see note */
   @config "../../tailwind.config.js";
   ```
+  Note (found in step 2): utilities must be UNLAYERED. Chakra's global `*` reset is
+  unlayered and beats anything inside `@layer utilities` (layer rules trump specificity),
+  which zeroed out `p-*`/`m-*`. Unlayered utilities compete by specificity and win.
 - [x] `index.html`: `lang="pt-BR"`, title "Brev.ly", Open Sans `<link>` (400/600/700, display=swap), favicon
 - [x] Smoke test: one Tailwind class renders
 
@@ -85,7 +94,7 @@ Notes: Chakra v3 needs only `@emotion/react`; react-router v7 is a single packag
 
 ## Step 2 — Theme & providers
 
-- [ ] `src/theme.ts`: `createSystem(defaultConfig, defineConfig({...}))` (no `extendTheme` in v3)
+- [x] `src/theme.ts`: `createSystem(defaultConfig, defineConfig({...}))` (no `extendTheme` in v3)
   - `tokens.colors`: blue.base/dark, gray.100–600, danger, white
   - `fonts`: Open Sans (heading + body)
   - `textStyles`: xl/lg/md/sm/xs per style guide
@@ -93,9 +102,9 @@ Notes: Chakra v3 needs only `@emotion/react`; react-router v7 is a single packag
   - `recipes.button`: solid (bg primary, h 48px, hover blue-dark, disabled opacity), subtle (bg gray.200, hover border blue-base — used by "Baixar CSV" and icon buttons)
   - `recipes.input`: h 48px, bg white, border gray.300, focus blue.base, invalid danger
   - `globalCss`: body bg gray.200, color gray.600
-- [ ] `src/components/ui/toaster.tsx` (Chakra v3 `createToaster` snippet)
-- [ ] `src/main.tsx`: `<ChakraProvider value={system}>` > QueryClientProvider > BrowserRouter + `<Toaster/>`
-- [ ] Verify: themed Button/Input render correctly, no CSS reset conflicts
+- [x] `src/components/ui/toaster.tsx` (Chakra v3 `createToaster` snippet)
+- [x] `src/main.tsx`: `<ChakraProvider value={system}>` > QueryClientProvider > BrowserRouter + `<Toaster/>` (query-client.ts created early, see step 3)
+- [x] Verify: themed Button/Input render correctly, no CSS reset conflicts (headless Chrome screenshot)
 
 Boundary rule: Tailwind classes only on plain HTML layout elements; Chakra style props only on Chakra components (Emotion CSS is unlayered and always beats layered Tailwind utilities). Escape hatch: Tailwind `!` modifier.
 
