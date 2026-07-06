@@ -155,14 +155,18 @@ Boundary rule: Tailwind classes only on plain HTML layout elements; Chakra style
 
 ## Step 6 — Redirect & 404 pages
 
-- [ ] `src/App.tsx` routes: `/` → Home, `/:shortUrl` → Redirect, `*` → NotFound
-- [ ] `src/pages/redirect.tsx`:
+- [x] `src/App.tsx` routes: `/` → Home, `/:shortUrl` → Redirect, `*` → NotFound
+- [x] `src/pages/Redirect/` (view + `hooks/useRedirectToOriginalUrl.ts`):
   - `useQuery` GET `/links/:shortUrl` with `retry: false`
   - Effect guarded by `useRef` (StrictMode runs effects twice in dev — prevents double increment)
   - `Promise.race([incrementLinkAccess(id), sleep(2000)])` **then** `window.location.replace(originalUrl)` (PATCH must settle before replace — unload cancels in-flight requests)
   - Card: "Redirecionando..." (xl), "O link será aberto automaticamente em alguns instantes.", "Não foi redirecionado? Acesse aqui" (`href={originalUrl}`)
   - On 404: render `<NotFound/>` **inline** (any 1-segment path matches `/:shortUrl` — do not navigate)
-- [ ] `src/pages/not-found.tsx`: centered card, 404 graphic, "Link não encontrado" (xl), body text linking to `/`
+- [x] `src/pages/NotFound/NotFound.tsx`: centered card, 404 graphic, "Link não encontrado" (xl), body text linking to `/`
+
+  Verified with Playwright: redirect card renders → lands on originalUrl; accessCount +1 exactly
+  (StrictMode guard, dev mode); `/nao-existe-xyz` → inline 404; `/a/b/c` → catch-all 404;
+  404 home link navigates back to `/`. No console errors.
 
 ## Step 7 — Polish & verification
 

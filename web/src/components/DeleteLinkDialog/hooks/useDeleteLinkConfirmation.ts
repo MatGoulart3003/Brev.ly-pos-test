@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { useDeleteLink } from "../../../hooks/useDeleteLink";
-import { toaster } from "../../Toaster/Toaster";
 import { useDeleteLinkDialogStore } from "../../../stores/useDeleteLinkDialogStore";
+import { toaster } from "../../Toaster/Toaster";
 
 export function useDeleteLinkConfirmation() {
   const { t } = useTranslation();
