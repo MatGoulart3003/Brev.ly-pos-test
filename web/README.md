@@ -1,32 +1,55 @@
-# React + TypeScript + Vite
+# Brev.ly Web
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+URL shortener SPA built with React 19, Vite, TypeScript, Chakra UI v3 and Tailwind CSS v4.
 
-Currently, two official plugins are available:
+## Requirements
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Node.js 20+
+- pnpm
+- Brev.ly API running (see `../server`)
 
-## React Compiler
+## Setup
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+```bash
+# 1. install dependencies
+pnpm install
 
-## Expanding the Oxlint configuration
+# 2. environment variables
+cp .env.example .env   # fill in the URLs (see below)
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+# 3. start the dev server
+pnpm dev
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+App runs at `http://localhost:5173`.
+
+## Environment variables
+
+| Key                 | Description                                             | Local value             |
+| ------------------- | ------------------------------------------------------- | ----------------------- |
+| `VITE_FRONTEND_URL` | Public URL of this app (used to build/copy short links) | `http://localhost:5173` |
+| `VITE_BACKEND_URL`  | Brev.ly API base URL                                    | `http://localhost:3333` |
+
+## Scripts
+
+| Script           | Description                    |
+| ---------------- | ------------------------------ |
+| `pnpm dev`       | start the dev server           |
+| `pnpm build`     | typecheck + production build   |
+| `pnpm preview`   | preview the production build   |
+| `pnpm typecheck` | TypeScript check only          |
+| `pnpm lint`      | Biome check (lint + format)    |
+| `pnpm format`    | Biome check with fixes applied |
+
+## Pages
+
+- `/` — create-link form + links list (infinite scroll, copy, delete, CSV export)
+- `/:shortUrl` — increments the access count and redirects to the original URL
+- any other path — 404 page
+
+## Architecture notes
+
+- `src/services/` — one folder per API call (`<name>.ts` + `types.ts`), mirroring the server structure.
+- `src/hooks/` — shared React Query hooks; component-specific logic lives in each component's `hooks/` folder.
+- Components: PascalCase folder + file (`CreateLinkForm/CreateLinkForm.tsx`), Tailwind classes grouped in a `stylesheet` const, all copy through i18next (`pt_BR`).
+- Chakra UI themes the interactive components (`src/theme.ts`); Tailwind handles layout. Tailwind utilities are imported **unlayered** on purpose — see the note in `src/styles/index.css`.

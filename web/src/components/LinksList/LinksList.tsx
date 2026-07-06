@@ -1,6 +1,6 @@
 import { Button, Heading, Spinner } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
-import { PiDownloadSimple } from "react-icons/pi";
+import { PiDownloadSimple, PiWarning } from "react-icons/pi";
 import { DeleteLinkDialog } from "../DeleteLinkDialog/DeleteLinkDialog";
 import { EmptyState } from "../EmptyState/EmptyState";
 import { LinkItem } from "../LinkItem/LinkItem";
@@ -13,13 +13,22 @@ const stylesheet = {
   list: "flex max-h-96 flex-col divide-y divide-gray-200 overflow-y-auto lg:max-h-[500px]",
   loadingRow: "flex items-center justify-center gap-2 py-8 text-gray-500",
   loadingMessage: "text-xs uppercase leading-4",
+  errorRow:
+    "flex items-center justify-center gap-2 py-8 text-xs uppercase leading-4 text-gray-500",
+  errorIcon: "text-danger",
   sentinel: "h-px",
 };
 
 export function LinksList() {
   const { t } = useTranslation();
-  const { links, isLoading, isEmpty, isFetchingNextPage, sentinelRef } =
-    useLinksList();
+  const {
+    links,
+    isLoading,
+    hasError,
+    isEmpty,
+    isFetchingNextPage,
+    sentinelRef,
+  } = useLinksList();
   const { downloadReport, isExporting } = useDownloadLinksReport();
 
   return (
@@ -33,7 +42,7 @@ export function LinksList() {
           size="sm"
           onClick={downloadReport}
           loading={isExporting}
-          disabled={isLoading || isEmpty}
+          disabled={isLoading || isEmpty || hasError}
         >
           <PiDownloadSimple />
           {t("linksList.downloadCsv")}
@@ -49,9 +58,18 @@ export function LinksList() {
         </div>
       )}
 
+      {hasError && (
+        <div className={stylesheet.errorRow}>
+          <span className={stylesheet.errorIcon}>
+            <PiWarning aria-hidden />
+          </span>
+          {t("errors.genericTitle")}
+        </div>
+      )}
+
       {isEmpty && <EmptyState />}
 
-      {!isLoading && !isEmpty && (
+      {!isLoading && !isEmpty && !hasError && (
         <ul className={stylesheet.list}>
           {links.map((link) => (
             <LinkItem key={link.id} link={link} />

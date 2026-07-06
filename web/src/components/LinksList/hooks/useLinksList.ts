@@ -33,7 +33,8 @@ export function useLinksList() {
   return {
     links,
     isLoading: linksQuery.isLoading,
-    isEmpty: !linksQuery.isLoading && links.length === 0,
+    hasError: linksQuery.isError,
+    isEmpty: !linksQuery.isLoading && !linksQuery.isError && links.length === 0,
     isFetchingNextPage,
     sentinelRef,
   };
