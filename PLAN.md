@@ -141,12 +141,17 @@ Boundary rule: Tailwind classes only on plain HTML layout elements; Chakra style
 
 ## Step 5 — Home: links list
 
-- [ ] `src/components/links-list.tsx` (card, right column):
+- [x] `src/components/LinksList/` (view + `hooks/useLinksList.ts` + `hooks/useDownloadLinksReport.ts`):
   - Header "Meus links" (lg) + "Baixar CSV" button (subtle, DownloadSimple icon; disabled when list empty or export pending, spinner while exporting → `window.open(reportUrl, "_blank", "noopener")`)
   - Scrollable body (`max-h` + `overflow-y-auto`, `divide-y divide-gray-200`), IntersectionObserver sentinel → `fetchNextPage`, spinner row while fetching
-  - Loading state (spinner + "Carregando links...") and empty state ("AINDA NÃO EXISTEM LINKS CADASTRADOS", Link icon)
-- [ ] `src/components/link-item.tsx`: `brev.ly/{shortUrl}` anchor (blue-base, md) → `VITE_FRONTEND_URL/{shortUrl}`, originalUrl below (gray-500, sm), both truncated; "{n} acessos"; IconButtons Copy (clipboard + toast) and Trash
-- [ ] `src/stores/delete-dialog.ts` (zustand: link pending deletion) + `src/components/delete-link-dialog.tsx` (Chakra Dialog: confirm → delete mutation + toast)
+  - Loading state (spinner + "Carregando links...") and empty state (`EmptyState/EmptyState.tsx`)
+- [x] `src/components/LinkItem/` (view + `hooks/useLinkItemActions.ts`): short link anchor → `VITE_FRONTEND_URL/{shortUrl}`, originalUrl truncated, "{n} acessos", IconButtons Copy (clipboard + toast) and Trash
+- [x] `src/stores/useDeleteLinkDialogStore.ts` (zustand) + `src/components/DeleteLinkDialog/` (Chakra Dialog + `hooks/useDeleteLinkConfirmation.ts`)
+
+  Verified with Playwright: 20 on page 1, infinite scroll to 31, clipboard content, delete via dialog,
+  CSV popup, mocked empty state (CSV disabled). **Server fix required:** `@fastify/cors` only allows
+  GET/HEAD/POST by default — added `methods: ["GET", "POST", "PATCH", "DELETE"]` in
+  `server/src/infra/http/server.ts` (browser preflight blocked DELETE/PATCH; curl never caught it).
 
 ## Step 6 — Redirect & 404 pages
 

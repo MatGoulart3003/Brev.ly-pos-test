@@ -1,4 +1,5 @@
 import { CreateLinkForm } from "../../components/CreateLinkForm/CreateLinkForm";
+import { LinksList } from "../../components/LinksList/LinksList";
 import { Logo } from "../../components/Logo/Logo";
 
 const stylesheet = {
@@ -17,7 +18,7 @@ export function Home() {
         </div>
         <div className={stylesheet.grid}>
           <CreateLinkForm />
-          {/* LinksList arrives in step 5 */}
+          <LinksList />
         </div>
       </div>
     </main>

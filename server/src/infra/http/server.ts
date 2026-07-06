@@ -22,7 +22,11 @@ const app = fastify().withTypeProvider<ZodTypeProvider>();
 app.setValidatorCompiler(validatorCompiler);
 app.setSerializerCompiler(serializerCompiler);
 
-app.register(fastifyCors, { origin: "*" });
+app.register(fastifyCors, {
+  origin: "*",
+  // @fastify/cors only allows CORS-safelisted methods (GET, HEAD, POST) by default
+  methods: ["GET", "POST", "PATCH", "DELETE"],
+});
 
 app.register(fastifySwagger, {
   openapi: {
