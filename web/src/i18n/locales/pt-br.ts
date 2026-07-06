@@ -7,7 +7,7 @@ export const ptBR = {
   createLinkForm: {
     title: "Novo link",
     originalUrlLabel: "Link original",
-    originalUrlPlaceholder: "www.exemplo.com.br",
+    originalUrlPlaceholder: "https://www.exemplo.com.br",
     shortUrlLabel: "Link encurtado",
     submit: "Salvar link",
     errors: {

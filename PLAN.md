@@ -11,7 +11,7 @@ Code in English; user-facing copy in pt-BR (per Figma).
 - Tailwind classes grouped in a `const stylesheet = { ... }` per component; `className={stylesheet.key}` in JSX — never inline class strings.
 - All UI copy via i18next `useTranslation()` with the `pt_BR` language key (`src/i18n/locales/pt-br.ts`); typed keys via `src/i18n/i18next.d.ts`. No hardcoded strings in views.
 - No magic strings/numbers in logic: `UPPER_SNAKE_CASE` constants at the top of the module.
-- View/logic split: components with logic are folders — view in `index.tsx`, business logic in `hooks/useWhatTheHookDoes.ts` inside the component folder (e.g. `components/create-link-form/index.tsx` + `components/create-link-form/hooks/useCreateLinkForm.ts`).
+- View/logic split: components (and pages) are PascalCase folders with the view file named after the component — `components/CreateLinkForm/CreateLinkForm.tsx`, `pages/Home/Home.tsx` — plus `hooks/useWhatTheHookDoes.ts` inside the folder for business logic. No `index.tsx` barrel files.
 
 ## Reference
 
@@ -65,11 +65,11 @@ web/
     │                       # delete-link/, export-links/ — each with <name>.ts + types.ts;
     │                       # shared Link in types.ts, endpoints.ts with path builders
     ├── stores/             # delete-dialog.ts (zustand)
-    ├── hooks/              # use-links, use-create-link, use-delete-link, use-export-links
-    ├── components/         # logo, create-link-form, links-list, link-item,
-    │   │                   # delete-link-dialog, empty-state
-    │   └── ui/toaster.tsx
-    └── pages/              # home.tsx, redirect.tsx, not-found.tsx
+    ├── hooks/              # useLinks, useCreateLink, useDeleteLink, useExportLinks
+    ├── components/         # PascalCase folders: Logo/Logo.tsx, Toaster/Toaster.tsx,
+    │                       # CreateLinkForm/, LinksList/, LinkItem/, DeleteLinkDialog/,
+    │                       # EmptyState/ — each Name/Name.tsx + hooks/ when it has logic
+    └── pages/              # Home/Home.tsx, Redirect/Redirect.tsx, NotFound/NotFound.tsx
 ```
 
 ---
@@ -123,9 +123,9 @@ Boundary rule: Tailwind classes only on plain HTML layout elements; Chakra style
 
 ## Step 4 — Home: create link form
 
-- [ ] `src/pages/home.tsx`: mobile-first — `min-h-dvh bg-gray-200`, stacked on mobile, `lg:grid lg:grid-cols-[380px_1fr]` on desktop; `<Logo/>` on top
-- [ ] `src/components/logo.tsx` (icon + "brev.ly" wordmark)
-- [ ] `src/components/create-link-form.tsx` (card gray-100, rounded, p-6/p-8):
+- [x] `src/pages/home/index.tsx`: mobile-first — stacked on mobile, `lg:grid lg:grid-cols-[380px_1fr]` on desktop; `<Logo/>` on top
+- [x] `src/components/logo/index.tsx` (icon + "brev.ly" wordmark)
+- [x] `src/components/create-link-form/` (view `index.tsx` + `hooks/useCreateLinkForm.ts`; card gray-100, rounded, p-6/p-8):
   - Heading "Novo link" (lg)
   - Field "LINK ORIGINAL" (label xs) — placeholder `www.exemplo.com.br`
   - Field "LINK ENCURTADO" — fixed `brev.ly/` prefix (InputGroup startElement)
@@ -133,6 +133,11 @@ Boundary rule: Tailwind classes only on plain HTML layout elements; Chakra style
   - Field errors: Warning icon + message in danger
   - "Salvar link" button full width, disabled + spinner while pending
   - 409 → `form.setError("shortUrl")` + error toast, form data preserved
+
+  All verified with a Playwright driver (empty submit, bad pattern, valid create, duplicate 409).
+  Gotchas found: Field.ErrorText defaults to textStyle xs which inherits our uppercase — needs
+  `textTransform="none"`; InputGroup startElement doesn't pad for text prefixes — Input needs
+  explicit `ps` (`SHORT_URL_PREFIX_PADDING`).
 
 ## Step 5 — Home: links list
 

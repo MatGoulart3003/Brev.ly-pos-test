@@ -4,7 +4,7 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router";
 import App from "./App";
-import { Toaster } from "./components/ui/toaster";
+import { Toaster } from "./components/Toaster/Toaster";
 import { queryClient } from "./lib/query-client";
 import { system } from "./theme";
 import "./i18n";
