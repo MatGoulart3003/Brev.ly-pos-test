@@ -53,7 +53,7 @@ const config = defineConfig({
       lg: {
         value: { fontSize: "18px", lineHeight: "24px", fontWeight: "700" },
       },
-      md: {
+      lg: {
         value: { fontSize: "14px", lineHeight: "18px", fontWeight: "600" },
       },
       sm: {

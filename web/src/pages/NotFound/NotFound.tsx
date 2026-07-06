@@ -6,7 +6,7 @@ const HOME_ROUTE = "/";
 
 const stylesheet = {
   page: "flex min-h-dvh items-center justify-center px-3 py-8",
-  card: "flex w-full max-w-xl flex-col items-center gap-6 rounded-lg bg-gray-100 px-5 py-12 text-center md:px-12 md:py-16",
+  card: "flex w-full max-w-xl flex-col items-center gap-6 rounded-lg bg-gray-100 px-5 py-12 text-center lg:px-12 lg:py-16",
   graphic: "text-6xl font-extrabold leading-none text-blue-base",
   description: "text-sm leading-[18px] font-semibold text-gray-500",
   homeLink: "text-blue-base underline",

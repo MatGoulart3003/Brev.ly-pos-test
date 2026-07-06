@@ -14,7 +14,7 @@ import { useCreateLinkForm } from "./hooks/useCreateLinkForm";
 const SHORT_URL_PREFIX_PADDING = "16";
 
 const stylesheet = {
-  card: "flex w-full flex-col gap-5 rounded-lg bg-gray-100 p-6 md:p-8",
+  card: "flex w-full flex-col gap-5 rounded-lg bg-gray-100 p-6 lg:p-8",
   fields: "flex flex-col gap-4",
 };
 

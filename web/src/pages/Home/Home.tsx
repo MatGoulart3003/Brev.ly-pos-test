@@ -4,7 +4,7 @@ import { Logo } from "../../components/Logo/Logo";
 
 const stylesheet = {
   page: "min-h-dvh px-3 py-8",
-  content: "mx-auto flex w-full max-w-[980px] flex-col gap-6 md:gap-8 md:pt-16",
+  content: "mx-auto flex w-full max-w-[980px] flex-col gap-6 lg:gap-8 lg:pt-16",
   logoWrapper: "flex justify-center lg:justify-start",
   grid: "flex flex-col gap-3 lg:grid lg:grid-cols-[380px_1fr] lg:items-start lg:gap-5",
 };

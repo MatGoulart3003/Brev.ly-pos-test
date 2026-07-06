@@ -8,7 +8,7 @@ import { useDownloadLinksReport } from "./hooks/useDownloadLinksReport";
 import { useLinksList } from "./hooks/useLinksList";
 
 const stylesheet = {
-  card: "flex w-full flex-col gap-4 rounded-lg bg-gray-100 p-6 md:p-8",
+  card: "flex w-full flex-col gap-4 rounded-lg bg-gray-100 p-6 lg:p-8",
   header: "flex items-center justify-between",
   list: "flex max-h-96 flex-col divide-y divide-gray-200 overflow-y-auto lg:max-h-[500px]",
   loadingRow: "flex items-center justify-center gap-2 py-8 text-gray-500",
